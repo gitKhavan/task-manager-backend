@@ -1,11 +1,15 @@
+const User = require('../models/User')
+
 async function register_post(req, res){
     const {email, password} = req.body;
-    console.log(email, password);
 
-
-    res.send("User registered");
-    
-
+    try {
+        const user = await User.create({email, password})
+        res.status(201).json(user)
+    } catch (err){
+        console.log(err)
+        res.status(400).send("error, user not created")
+    }
 }
 async function register_get(req, res){
     res.send("User registration page");

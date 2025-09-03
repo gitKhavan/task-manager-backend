@@ -7,6 +7,12 @@ class User{
         this.password = password;
     }
 
+    static async create(data){
+        const {email, password} = data;
+        let response = await db.query("INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *", [email, password]);
+        return new User(response.rows[0]);
+    }
+
     
 
 }
