@@ -1,4 +1,5 @@
 const db = require("../../database/connect");
+const { hashPassword } = require("../../utils/auth")
 
 class User{
     constructor({user_id, email, username, password}){
@@ -10,7 +11,9 @@ class User{
 
     static async create(data){
         const {email, username, password} = data;
-        let response = await db.query("INSERT INTO users (email, username, password) VALUES ($1, $2, $3) RETURNING *", [email, username, password]);
+        const hashedPassword = await hashPassword(password)
+
+        let response = await db.query("INSERT INTO users (email, username, password) VALUES ($1, $2, $3) RETURNING *", [email, username, hashedPassword]);
         return new User(response.rows[0]);
     }
 

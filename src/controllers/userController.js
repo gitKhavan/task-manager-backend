@@ -12,6 +12,7 @@ async function register_post(req, res){
         res.status(400).send("error, user not created")
     }
 }
+
 async function register_get(req, res){
     res.send("User registration page");
 }
