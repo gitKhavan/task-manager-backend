@@ -1,4 +1,5 @@
 const User = require('../models/User')
+const { generateToken } = require('../../utils/jwt')
 
 
 async function register_post(req, res){
@@ -6,10 +7,15 @@ async function register_post(req, res){
 
     try {
         const user = await User.create({email, username, password})
-        res.status(201).json(user)
+        const token = generateToken(user);
+        res.status(201).json({
+            message: "User registered successfully",
+            token, 
+            user: {id: user.id, email: user.email, username: user.username}
+        })
     } catch (err){
         console.log(err)
-        res.status(400).send("error, user not created")
+        res.status(400).send({message: "Error, user not created"})
     }
 }
 
