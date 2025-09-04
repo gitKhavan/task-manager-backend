@@ -16,7 +16,14 @@ class User{
         return new User(response.rows[0]);
     }
 
-    
+    static async findByEmail(email){
+        const response = await db.query("SELECT * FROM users where email = $1", [email])
+        if (response.rows.length === 0){
+            throw new Error("Unable to locate user email")
+        }
+        return new User(response.rows[0]);
+
+    }
 
 }
 
